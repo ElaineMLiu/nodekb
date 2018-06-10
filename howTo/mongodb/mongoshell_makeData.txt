@@ -1,0 +1,213 @@
+mongo
+show dbs
+use nodeqb
+db.createCollection('users')
+db.users.insert({name: "Ann", email: "a@g.com", role: "student", class: "wXy1z", class_title: "Physics", password: "pwdann" })
+db.users.insert({name: "Bill", email: "b@g.com", role: "student", class: "wXy1z", class_title: "Physics", password: "pwdbill" })
+db.users.insert({name: "ELiu", email: "e@g.com", role: "teacher", class: "wXy1z", class_title: "Physics", password: "pwdeliu" })
+db.users.insert({name: "MsLee", email: "mlee@g.com", role: "teacer", class: "abc123", class_title: "Algebra", password: "pwdmslee" })
+db.users.insert({name: "Ben", email: "benny@g.com", role: "student", class: "abc123", class_title: "Algebra", password: "pwdben" })
+db.users.insert({name: "June", email: "june@g.com", role: "student", class: "abc123", class_title: "Algebra", password: "pwdjune" })
+db.users.find().pretty()
+
+db.createCollection('questions')
+db.questions.insert({quiz_id: ObjectId("5b1c0a5136bbf1389cfdb00c"), order: 1, question:"A convex lens..", choiceA: "bulges out in the middle", choiceB: "is thinner in the middle", choiceC: "is a liquid", choiceD: "is a gas", choiceCorrect:"choiceA", author: ObjectId("5b1cdd4da9e1c08be5eea5bc"), included: true})
+db.questions.insert({quiz_id: ObjectId("5b1c0a5136bbf1389cfdb00c") , question:"A parabolic mirror", order: 2, choiceA: "has a focus", choiceB: "caves in", choiceC: "can give a real image", choiceD: "all of the above", choiceCorrect:"choiceD", author: ObjectId("5b1cdd4da9e1c08be5eea5bc"), included: false})
+db.questions.insert({quiz_id:ObjectId("5b1be551cd778512b8097285"), question:"Calculus is the study of", order: 1, choiceA: "tartar", choiceB: "limits", choiceC: "chemistry", choiceD: "arithmetic", choiceCorrect:"choiceB", author: ObjectId("5b1cdd4da9e1c08be5eea5bd"), included: false})
+db.questions.insert({quiz_id:ObjectId("5b1be551cd778512b8097285"), question:"L'hopital's rule says that", order: 2, choiceA: "0/0 limits depends on num or den faster", choiceB: "hospital", choiceC: "hopping", choiceD: "lopping", choiceCorrect:"choiceA", author: ObjectId("5b1cdd4da9e1c08be5eea5bd"), included: true})
+db.questions.find().pretty()
+
+db.createCollection('scores')
+db.scores.insert({class: "wXy1z", student_id: ObjectId("5b1cdd47a9e1c08be5eea5ba")  , quiz_title: "Gravity" , score: 95, created_at: ISODate(), details:[{question: "G is for", choiceA: "gravity", choiceB: "gravy", choiceC:"cat", choiceD:"dog", choiceStudent:"choiceB", choiceCorrect:"choiceA"}, {question: "A is for", choiceA: "bat", choiceB: "ant", choiceC:"cat", choiceD:"dog", choiceStudent:"choiceC", choiceCorrect:"choiceB"}]})
+db.scores.find().pretty()
+
+
+
+db.users.find().pretty()
+{
+        "_id" : ObjectId("5b1cdd47a9e1c08be5eea5ba"),
+        "name" : "Ann",
+        "email" : "a@g.com",
+        "role" : "student",
+        "class" : "wXy1z",
+        "class_title" : "Physics",
+        "password" : "pwdann"
+}
+{
+        "_id" : ObjectId("5b1cdd4da9e1c08be5eea5bb"),
+        "name" : "Bill",
+        "email" : "b@g.com",
+        "role" : "student",
+        "class" : "wXy1z",
+        "class_title" : "Physics",
+        "password" : "pwdbill"
+}
+{
+        "_id" : ObjectId("5b1cdd4da9e1c08be5eea5bc"),
+        "name" : "ELiu",
+        "email" : "e@g.com",
+        "role" : "teacher",
+        "class" : "wXy1z",
+        "class_title" : "Physics",
+        "password" : "pwdeliu"
+}
+{
+        "_id" : ObjectId("5b1cdd4da9e1c08be5eea5bd"),
+        "name" : "MsLee",
+        "email" : "mlee@g.com",
+        "role" : "teacer",
+        "class" : "abc123",
+        "class_title" : "Algebra",
+        "password" : "pwdmslee"
+}
+{
+        "_id" : ObjectId("5b1cdd4da9e1c08be5eea5be"),
+        "name" : "Ben",
+        "email" : "benny@g.com",
+        "role" : "student",
+        "class" : "abc123",
+        "class_title" : "Algebra",
+        "password" : "pwdben"
+}
+{
+        "_id" : ObjectId("5b1cdd50a9e1c08be5eea5bf"),
+        "name" : "June",
+        "email" : "june@g.com",
+        "role" : "student",
+        "class" : "abc123",
+        "class_title" : "Algebra",
+        "password" : "pwdjune"
+}
+> db.quizzes.find().pretty()
+{
+        "_id" : ObjectId("5b1bcc4c74cfff4bd4df3876"),
+        "title" : "Static Electricity",
+        "created_at" : ISODate("2018-06-09T13:11:21.623Z"),
+        "description" : "Chapter 16",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 3
+}
+{
+        "_id" : ObjectId("5b1bcc8674cfff4bd4df3877"),
+        "title" : "Magnetism",
+        "created_at" : ISODate("2018-06-09T13:11:41.539Z"),
+        "description" : "Ch18~19",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 1
+}
+{
+        "_id" : ObjectId("5b1be4c68cb0a83ba4c27486"),
+        "description" : "Chapter 1 Review",
+        "class" : "wXy1z",
+        "title" : "Physics Quiz",
+        "plays" : 0,
+        "reviewable" : false,
+        "__v" : 0,
+        "created_at" : ISODate("2018-06-09T14:33:07.094Z")
+}
+{
+        "_id" : ObjectId("5b1be551cd778512b8097285"),
+        "description" : "Chapter 13",
+        "class" : "abc123",
+        "title" : "Calculus Quiz",
+        "plays" : 0,
+        "reviewable" : false,
+        "created_at" : ISODate("2018-06-09T14:33:53.296Z"),
+        "__v" : 0
+}
+{
+        "_id" : ObjectId("5b1c0a5136bbf1389cfdb00c"),
+        "description" : "Chapter 20",
+        "class" : "wXy1z",
+        "title" : "Mirrors and Refraction",
+        "plays" : 0,
+        "reviewable" : false,
+        "created_at" : ISODate("2018-06-09T17:11:45.299Z"),
+        "__v" : 0
+}
+
+> db.questions.find().pretty()
+{
+        "_id" : ObjectId("5b1ce075a9e1c08be5eea5c0"),
+        "quiz_id" : ObjectId("5b1c0a5136bbf1389cfdb00c"),
+        "order" : 1,
+        "question" : "A convex lens..",
+        "choiceA" : "bulges out in the middle",
+        "choiceB" : "is thinner in the middle",
+        "choiceC" : "is a liquid",
+        "choiceD" : "is a gas",
+        "choiceCorrect" : "choiceA",
+        "author" : ObjectId("5b1cdd4da9e1c08be5eea5bc"),
+        "included" : true
+}
+{
+        "_id" : ObjectId("5b1ce087a9e1c08be5eea5c1"),
+        "quiz_id" : ObjectId("5b1c0a5136bbf1389cfdb00c"),
+        "question" : "A parabolic mirror",
+        "order" : 2,
+        "choiceA" : "has a focus",
+        "choiceB" : "caves in",
+        "choiceC" : "can give a real image",
+        "choiceD" : "all of the above",
+        "choiceCorrect" : "choiceD",
+        "author" : ObjectId("5b1cdd4da9e1c08be5eea5bc"),
+        "included" : false
+}
+{
+        "_id" : ObjectId("5b1ce087a9e1c08be5eea5c2"),
+        "quiz_id" : ObjectId("5b1be551cd778512b8097285"),
+        "question" : "Calculus is the study of",
+        "order" : 1,
+        "choiceA" : "tartar",
+        "choiceB" : "limits",
+        "choiceC" : "chemistry",
+        "choiceD" : "arithmetic",
+        "choiceCorrect" : "choiceB",
+        "author" : ObjectId("5b1cdd4da9e1c08be5eea5bd"),
+        "included" : false
+}
+{
+        "_id" : ObjectId("5b1ce088a9e1c08be5eea5c3"),
+        "quiz_id" : ObjectId("5b1be551cd778512b8097285"),
+        "question" : "L'hopital's rule says that",
+        "order" : 2,
+        "choiceA" : "0/0 limits depends on num or den faster",
+        "choiceB" : "hospital",
+        "choiceC" : "hopping",
+        "choiceD" : "lopping",
+        "choiceCorrect" : "choiceA",
+        "author" : ObjectId("5b1cdd4da9e1c08be5eea5bd"),
+        "included" : true
+}
+> db.scores.find().pretty()
+{
+        "_id" : ObjectId("5b1ce35ca9e1c08be5eea5c4"),
+        "class" : "wXy1z",
+        "student_id" : ObjectId("5b1cdd47a9e1c08be5eea5ba"),
+        "quiz_title" : "Gravity",
+        "score" : 95,
+        "created_at" : ISODate("2018-06-10T08:37:48.708Z"),
+        "details" : [
+                {
+                        "question" : "G is for",
+                        "choiceA" : "gravity",
+                        "choiceB" : "gravy",
+                        "choiceC" : "cat",
+                        "choiceD" : "dog",
+                        "choiceStudent" : "choiceB",
+                        "choiceCorrect" : "choiceA"
+                },
+                {
+                        "question" : "A is for",
+                        "choiceA" : "bat",
+                        "choiceB" : "ant",
+                        "choiceC" : "cat",
+                        "choiceD" : "dog",
+                        "choiceStudent" : "choiceC",
+                        "choiceCorrect" : "choiceB"
+                }
+        ]
+}
+>
