@@ -77,72 +77,13 @@ app.use(expressValidator()); //expressValidator middleware
 // set Static path
 app.use(express.static(path.join(__dirname,'public')));
 
-// --------------------- BRING IN THE TABLES FROM THE DATABASE ----------------------
-// database is 'nodeqb'
-// tables are 'quizzes', 'users', 'questions', 'scores'
 // Bring in the Models (which are the actual array of objects/entries in the tables/collections, not just the schema?)
 let Quiz = require('./models/quiz'); // quiz.js is the structure of each entry in the quizzes table
-let User = require('./models/user'); // ./models/user.js
-let Question = require('./models/question'); // ./models/question.js
-let Score = require('./models/score'); // ./models/score.js
 
 
 // ------------------- ROUTES -----------------------
 //now we can create routes
 //won't do anything until you listen to browser port 3000
-
-// Testing if the manual databases are loading
-// Home page .ejs lists out all the data in the table
-app.get('/testDB/quizzes',function(req,res){
-  Quiz.find({}, function(err, quizzes){ //query all {} the quizzes in the Quiz table
-    if(err){
-      console.log(err);  //error in query
-    }else{   //show all the quizzes info in list on index.ejs page
-      res.render('index_quizzes', {
-        title: 'Quizzes',
-        quizzes: quizzes
-      });
-    }
-  });
-});
-app.get('/testDB/users',function(req,res){
-  User.find({}, function(err, users){ //query all {} the quizzes in the Quiz table
-    if(err){
-      console.log(err);  //error in query
-    }else{   //show all the quizzes info in list on index.ejs page
-      res.render('index_users', {
-        title: 'Users',
-        users: users
-      });
-    }
-  });
-});
-app.get('/testDB/questions',function(req,res){
-  Question.find({}, function(err, questions){ //query all {} the quizzes in the Quiz table
-    if(err){
-      console.log(err);  //error in query
-    }else{   //show all the quizzes info in list on index.ejs page
-      res.render('index_questions', {
-        title: 'Questions',
-        questions: questions
-      });
-    }
-  });
-});
-app.get('/testDB/scores',function(req,res){
-  Score.find({}, function(err, scores){ //query all {} the quizzes in the Quiz table
-    if(err){
-      console.log(err);  //error in query
-    }else{   //show all the quizzes info in list on index.ejs page
-      res.render('index_scores', {
-        title: 'Scores',
-        scores: scores
-      });
-    }
-  });
-});
-
-
         /*
         app.get('/', function(req,res){
           //res.send('Hello World');
