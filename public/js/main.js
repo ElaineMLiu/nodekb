@@ -79,3 +79,25 @@ function deleteQuiz(){
 
 }
 */
+
+$(document).ready(function(){
+  $('.delete-question').on('click', function(e){
+    $target = $(e.target);
+    const id = $target.attr('data-id');
+    var confirmation = confirm("Are you sure you want to delete the question?");//("Really delete "+id+"?");
+    if(confirmation){
+      $.ajax({
+        type: 'DELETE',
+        url: '/quizzes/questions/delete/'+id,
+        success: function(response){
+          //alert('Deleting Quiz');
+          window.location.href='/';  //javascript redirect to homepage
+        },
+        error: function(err){
+          console.log(err);
+        }
+      }); //end ajax
+    } //end confirmation
+
+  });//end onclick callback
+});

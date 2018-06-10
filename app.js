@@ -186,6 +186,7 @@ app.get('/',function(req,res){
   });
 });
 
+// ------------------------------ 'AddQuiz', 'ABOUT',' DELETE' quiz BUTTON ROUTES -----------------------------------
 // Render the add-quiz page in add_quiz.ejs
 // Browser makes request to get that page
 app.get('/quizzes/add', function(req,res){
@@ -226,12 +227,14 @@ app.post('/quizzes/add', function(req,res){
 // It goes to localhost:/3000/quiz/...weird_quiz_id... and the view is rendered from ./views/quiz.ejs
 app.get('/quiz/:id',function(req,res){
   Quiz.findById(req.params.id, function(err, quiz){
-    //console.log(quiz);
-    //return;
-    res.render('quiz', {
-      quiz: quiz
+    Question.find({ quiz_id: quiz._id}, function(err,questions){ // 5b1c0a5136bbf1389cfdb00c
+      res.render('quiz', {     //SEND TO QUIZ.EJS  PLAY PAGE
+        title: 'Play this Quiz',
+        quiz: quiz,
+        questions: questions
+        });
+      });
     });
-  });
 });
 
 // Route for the Quiz EDIT button in index.ejs
@@ -246,7 +249,7 @@ app.get('/quizzes/edit/:id',function(req,res){
     //console.log(quiz);
     //return;
     res.render('edit_quiz', {
-      title: 'Edit Quiz',
+      title: 'Edit Quiz Info',
       quiz: quiz
     });
   });
@@ -284,6 +287,139 @@ app.post('/quizzes/edit/:id', function(req,res){
 app.delete('/quizzes/delete/:id', function(req,res){
   let query = {_id: req.params.id};
   Quiz.remove(query,function(err){
+    if(err){
+      console.log(err);
+    }
+    res.send('Success'); //default would be 200 status, server sends this response
+  });
+});
+
+
+// ------------------------------ 'EDIT' quiz QUESTIONS BUTTON ROUTES -----------------------------------
+// Render the add-question page in add_question.ejs
+// Browser makes request to get that page
+app.get('/quizzes/questions/add/:id', function(req,res){
+  Quiz.findById(req.params.id, function(err, quiz){
+    Question.find({ quiz_id: quiz._id}, function(err,questions){ // 5b1c0a5136bbf1389cfdb00c
+      //console.log(questions);
+      //console.log(quiz);
+      res.render('add_question', {
+        title: 'Question Editor',
+        quiz: quiz,
+        questions: questions
+      });
+    });
+    //console.log(quiz);
+    //return;
+
+  });
+});
+
+app.post('/quizzes/questions/add/:id', function(req,res){
+  Quiz.findById(req.params.id, function(err, quiz){
+    Question.find({ quiz_id: quiz._id}, function(err,questions){ // 5b1c0a5136bbf1389cfdb00c
+      //console.log(questions);
+      //console.log(quiz);
+      /*
+      var newQuestion = {
+        question: req.body.question,
+        quiz_id: quiz._id,
+        order: 1,
+        choiceA: req.body.choiceA,
+        choiceB: req.body.choiceB,
+        choiceC: req.body.choiceC,
+        choiceD: req.body.choiceD,
+        choiceCorrect: req.body.choiceCorrect,
+        author: "5b1cdd4da9e1c08be5eea5bc",  //by login
+        included: true
+      };
+      console.log(newQuestion);
+      db.questions.insert(newQuestion,function(err,result){
+        if(err){
+          console.log(err);
+        }
+
+      });
+      res.redirect('/'); //instead of going to /users/add URL
+      console.log('SUCCESS');
+      */
+      let question = new Question();
+      question.question = req.body.question;
+      question.quiz_id = quiz._id;
+      question.order = 1;
+      question.choiceA = req.body.choiceA;
+      question.choiceB = req.body.choiceB;
+      question.choiceC = req.body.choiceC;
+      question.choiceD = req.body.choiceD;
+      question.choiceCorrect = req.body.choiceCorrect;
+      question.author = "5b1cdd4da9e1c08be5eea5bc";  //by login
+      question.included = true;
+      console.log(question);
+      question.save(function(err){
+        if(err){
+          console.log(err);
+          return;
+        }else{
+          res.redirect('/quizzes/questions/add/'+quiz._id);
+        }
+      });
+    }); //end saving questions to database
+  });
+}); //end this route
+
+
+app.get('/quizzes/questions/edit/:id/:pid', function(req,res){
+  Quiz.findById(req.params.id, function(err, quiz){
+    fillQuestion = Question.findById(req.params.pid);
+    Question.find({ quiz_id: quiz._id}, function(err,questions){ // 5b1c0a5136bbf1389cfdb00c
+      Question.findById({_id: req.params.pid},function(err, fillQuestion){
+        console.log(fillQuestion);
+        res.render('edit_question', {
+          title: 'Question Editor',
+          quiz: quiz,
+          questions: questions,
+          fillQuestion: fillQuestion
+        });
+      });
+      //console.log(questions);
+      //console.log(quiz);
+    });
+  });
+});
+
+
+app.post('/quizzes/questions/edit/:id/:pid', function(req,res){
+  Quiz.findById(req.params.id, function(err, quiz){
+    Question.find({ quiz_id: quiz._id}, function(err,questions){ // 5b1c0a5136bbf1389cfdb00c
+      let question = {};
+      question.question = req.body.question;
+      question.quiz_id = quiz._id;
+      question.order = 1;
+      question.choiceA = req.body.choiceA;
+      question.choiceB = req.body.choiceB;
+      question.choiceC = req.body.choiceC;
+      question.choiceD = req.body.choiceD;
+      question.choiceCorrect = req.body.choiceCorrect;
+      question.author = "5b1cdd4da9e1c08be5eea5bc";  //by login
+      question.included = true;
+      //console.log(question);
+      let query = {_id:req.params.pid};
+      Question.update(query, question, function(err){
+        if(err){
+          console.log(err);
+          return;
+        }else{
+          res.redirect('/quizzes/questions/add/'+quiz._id);
+        }
+      });
+    }); //end saving questions to database
+  });
+}); //end this route
+
+app.delete('/quizzes/questions/delete/:pid', function(req,res){
+  //console.log(req.params.pid);
+  let query = {_id: req.params.pid};
+  Question.remove(query,function(err){
     if(err){
       console.log(err);
     }
